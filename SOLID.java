@@ -116,3 +116,99 @@ class NoSQLDatabaseInvoiceDao implements InvoiceDao{
     }
 }
 
+// 3. Liskov Substitution Principle - If Class B is subtype of Class A, then we should be able to replace object of A with B without breaking the behaviour of the program
+//                                    Subclass should extend the capability of parent class not narrow it down
+
+interface Bike {
+    void turnOnEngine();
+    void accelerate();
+｝
+    
+class MotorCycle implements Bike {
+    boolean isEngineOn; 
+    int speed;
+    
+    public void turnOnEngine() {
+        //turn on the engine!
+        isEngineOn = true;
+    }
+    public void accelerate() {
+        //increase the speed
+        speed = speed + 10;
+    }
+}
+    
+class Bicycle implements Bike {
+    public void turnOnEngine() {
+        throw new AssertionError ("there is no engine");
+    ｝
+    public void accelerate () {
+        //do something
+    ｝
+}
+
+// 4. Interface Segmented Principle - Interfaces should be such, that client should implement unnecessary functions they do not need
+        
+interface RestaurantEmployee {
+    void washDishes (); 
+    void serveCustomers();
+    void cookFood ();
+}
+        
+class waiter implements RestaurantEmployee {
+    public void washDishes(){
+        //not my job
+    }
+    public void serveCustomers() {
+        //yes and here is my implemenation
+        System.out.println("serving the customer");
+    }
+    public void cookFood(){
+        // not my job
+    }
+}
+
+// Solution - 
+        
+interface WaiterInterface {
+    void serveCustomers (); 
+    void takeOrder ();
+｝
+    
+interface ChefInterface {
+    void cookFood(); 
+    void decideMenu(); 
+}
+
+class waiter implements WaiterInterface{
+    public void serveCustomers() {
+        System.out.println("serving the customer");
+    }
+    public void takeorder (){
+        System.out.println("taking orders");
+    }
+}
+
+// 5. Dependency Inversion Principle - Class should depend on interfaces rather than concrete classes
+
+//Problem - If there were wirelessKeyboard or wirelessMouse we won't be able to incorporate in it 
+class MacBook {
+    private final WiredKeyboard keyboard; 
+    private final WiredMouse mouse;
+    
+    public MacBook() {
+        keyboard = new WiredKeyboard ();
+        mouse = new WiredMouse ();
+    }
+｝
+
+//Solution - Use interface keyboard and mouse and make a class that implements the interface
+class MacBook {
+    private final Keyboard keyboard;
+    private final Mouse mouse;
+    
+    public MacBook(Keyboard keyboard, Mouse mouse) {
+        this. keyboard = keyboard;
+        this.mouse = mouse; 
+    }
+｝
